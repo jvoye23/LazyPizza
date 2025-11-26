@@ -1,16 +1,31 @@
 package com.jv23.lazypizza.core.data.networking.dto
 
+import com.jv23.lazypizza.core.domain.model.ProductCategory
 import kotlinx.serialization.Serializable
 
 // This class will hold the entire product catalog from the root of the firebase realtime database
 @Serializable
 data class ProductCatalogDto(
-    var pizzas: Map<String, PizzaDto> = emptyMap(),
-    var sauces: Map<String, SaucesDto> = emptyMap(),
-    var toppings: Map<String, ToppingsDto> = emptyMap(),
-    var drinks: Map<String, DrinkDto> = emptyMap(),
-    var iceCreams: Map<String, IceCreamDto> = emptyMap(),
+    var products: Map<String, ProductDto> = emptyMap(),
+    var toppings: Map<String, ToppingDto> = emptyMap(),
+)
+@Serializable
+data class ProductDto(
+    val id: String = "",
+    val name: String = "",
+    val price: Double = 0.0,
+    val productCategory: ProductCategory = ProductCategory.PIZZA,
+    val imageUrl: String = "",
+    val ingredients: String? = null,
+    val toppings: List<ToppingDto>? = null
+)
 
+@Serializable
+data class ToppingDto(
+    var id: String = "",
+    var name: String = "",
+    var price: Double = 0.0,
+    var imageUrl: String = ""
 )
 
 
@@ -45,15 +60,6 @@ data class IceCreamDto(
 
 @Serializable
 data class SaucesDto(
-    var id: String = "",
-    var name: String = "",
-    var price: Double = 0.0,
-    var productCategory: String = "",
-    var imageUrl: String = ""
-)
-
-@Serializable
-data class ToppingsDto(
     var id: String = "",
     var name: String = "",
     var price: Double = 0.0,

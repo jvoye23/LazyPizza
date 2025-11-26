@@ -33,7 +33,6 @@ data class PizzaDetailScreen(
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier
-        .background(MaterialTheme.colorScheme.bg)
 ) {
     val backStack = rememberNavBackStack(HomeNavKey)
 

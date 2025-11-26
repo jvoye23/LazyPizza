@@ -64,7 +64,11 @@ class HomeViewModel(
     fun onAction(action: HomeAction) {
         when(action) {
             is HomeAction.OnMenuItemCardClick -> {}
-            is HomeAction.OnChangeProductCategoryFilter -> {}
+            is HomeAction.OnChangeProductCategoryFilter -> {
+                _state.update { it.copy(
+                    categoryFilter = action.categoryFilter
+                ) }
+            }
         }
     }
 

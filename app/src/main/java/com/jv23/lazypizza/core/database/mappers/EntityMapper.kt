@@ -1,125 +1,48 @@
 package com.jv23.lazypizza.core.database.mappers
 
 import com.jv23.lazypizza.core.database.entity.ProductEntity
-import com.jv23.lazypizza.core.domain.model.Drink
-import com.jv23.lazypizza.core.domain.model.IceCream
-import com.jv23.lazypizza.core.domain.model.Pizza
+import com.jv23.lazypizza.core.database.entity.ToppingEntity
 import com.jv23.lazypizza.core.domain.model.Product
-import com.jv23.lazypizza.core.domain.model.ProductCategory
-import com.jv23.lazypizza.core.domain.model.Sauce
 import com.jv23.lazypizza.core.domain.model.Topping
 
-
-fun ProductEntity.toPizza(): Pizza {
-    return Pizza(
+fun ProductEntity.toProduct(): Product {
+    return Product(
         id = id,
         name = name,
+        price = price,
+        productCategory = productCategory,
+        imageUrl = imageUrl,
         ingredients = ingredients,
-        price = price,
-        productCategory = ProductCategory.PIZZA,
-        imageUrl = imageUrl,
-        toppingIds = toppingIds
+        toppings = toppings
     )
 }
 
-fun Pizza.toProductEntity(): ProductEntity {
+fun Product.toProductEntity(): ProductEntity {
     return ProductEntity(
         id = id,
         name = name,
+        price = price,
+        productCategory = productCategory,
+        imageUrl = imageUrl,
         ingredients = ingredients,
-        price = price,
-        productCategory = "PIZZA",
-        imageUrl = imageUrl,
-        toppingIds = toppingIds
+        toppings = toppings
     )
 }
 
-fun Drink.toProductEntity(): ProductEntity {
-    return ProductEntity(
+fun Topping.toToppingEntity(): ToppingEntity {
+    return ToppingEntity(
         id = id,
         name = name,
         price = price,
-        productCategory = "DRINK",
-        imageUrl = imageUrl,
-        ingredients = null,
-        toppingIds = null
-    )
-}
-
-fun IceCream.toProductEntity(): ProductEntity {
-    return ProductEntity(
-        id = id,
-        name = name,
-        price = price,
-        productCategory = "ICE CREAM",
-        imageUrl = imageUrl,
-        ingredients = null,
-        toppingIds = null
-    )
-}
-
-fun Sauce.toProductEntity(): ProductEntity {
-    return ProductEntity(
-        id = id,
-        name = name,
-        price = price,
-        productCategory = "SAUCE",
-        imageUrl = imageUrl,
-        ingredients = null,
-        toppingIds = null
-    )
-}
-
-fun Topping.toProductEntity(): ProductEntity {
-    return ProductEntity(
-        id = id,
-        name = name,
-        price = price,
-        productCategory = "TOPPING",
-        imageUrl = imageUrl,
-        ingredients = null,
-        toppingIds = null
-    )
-}
-
-
-
-fun ProductEntity.toTopping(): Topping {
-    return Topping(
-        id = id,
-        name = name,
-        price = price,
-        productCategory = ProductCategory.PIZZA,
         imageUrl = imageUrl
     )
 }
 
-fun ProductEntity.toDrink(): Drink {
-    return Drink(
+fun ToppingEntity.toTopping(): Topping {
+    return Topping(
         id = id,
         name = name,
         price = price,
-        productCategory = ProductCategory.DRINKS,
-        imageUrl = imageUrl,
-    )
-}
-
-fun ProductEntity.toIceCream(): IceCream {
-    return IceCream(
-        id = id,
-        name = name,
-        price = price,
-        productCategory = ProductCategory.ICE_CREAM,
-        imageUrl = imageUrl,
-    )
-}
-
-fun ProductEntity.toSauce(): Sauce {
-    return Sauce(
-        id = id,
-        name = name,
-        price = price,
-        productCategory = ProductCategory.SAUCES,
         imageUrl = imageUrl
     )
 }

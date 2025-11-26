@@ -18,6 +18,7 @@ val databaseModule = module {
         ).build()
     }
     single { get<LazyPizzaDatabase>().productDao }
+    single { get<LazyPizzaDatabase>().toppingDao }
 
     singleOf(::RoomLocalProductDataSource).bind<LocalProductDataSource>()
 }

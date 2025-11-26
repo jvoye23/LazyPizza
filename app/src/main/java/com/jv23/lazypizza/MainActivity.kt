@@ -34,7 +34,6 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.bg)
                 ) {
                     NavigationRoot()
                 }

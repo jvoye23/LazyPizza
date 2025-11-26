@@ -81,7 +81,7 @@ fun ProductCard(
             disabledContentColor = MaterialTheme.colorScheme.surfaceHigher,
             disabledContainerColor = MaterialTheme.colorScheme.textPrimary
         ),
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(1.dp),
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.surfaceHigher),
         content = {
             Row(
@@ -154,14 +154,13 @@ fun ProductCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            modifier = Modifier
-                                ,
+                            modifier = Modifier,
                             text = menuCardItem.productUi.name,
                             style = MaterialTheme.typography.body1Medium,
                             color = MaterialTheme.colorScheme.textPrimary
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        if (state.selectedItemQuantity != 0) {
+                        if (menuCardItem.quantity != 0) {
                             Box(
                                 modifier = Modifier
                                     .clickable { }
@@ -189,18 +188,17 @@ fun ProductCard(
                         }
 
                     }
-                   
-                    if(menuCardItem.productUi.productCategory == ProductCategory.PIZZA) {
-                        menuCardItem.productUi.ingredients?.let {
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                text = it,
-                                style = MaterialTheme.typography.body3Regular,
-                                color = MaterialTheme.colorScheme.textSecondary
-                            )
-                        }
+
+                    if (menuCardItem.productUi.ingredients != null) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            text = menuCardItem.productUi.ingredients,
+                            style = MaterialTheme.typography.body3Regular,
+                            color = MaterialTheme.colorScheme.textSecondary
+                        )
                     }
+
                     Spacer(modifier = Modifier.weight(1f))
 
                     if (menuCardItem.quantity == 0) {
@@ -382,9 +380,9 @@ private fun PizzaCardPreview() {
                             price = "$8.99",
                             productCategory = ProductCategory.DRINKS,
                             imageUrl = "",
-                            toppingIds = emptyList()
+                            toppings = emptyList()
                         ),
-                        quantity = 1
+                        quantity = 0
                     ),
                     selectedItemQuantity = 2
                 ),
@@ -396,9 +394,9 @@ private fun PizzaCardPreview() {
                         price = "$8.99",
                         productCategory = ProductCategory.DRINKS,
                         imageUrl = "",
-                        toppingIds = emptyList()
+                        toppings = emptyList()
                     ),
-                    quantity = 1
+                    quantity = 0
                 )
             )
         }

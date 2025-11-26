@@ -1,6 +1,7 @@
 package com.jv23.lazypizza.home.presentation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -58,10 +60,6 @@ fun HomeScreenRoot(
         onAction = viewModel::onAction,
         state = state
     )
-
-
-
-
 }
 
 @Composable
@@ -70,9 +68,21 @@ fun HomeScreen(
     onAction: (HomeAction) -> Unit,
     state: HomeState,
 ) {
+    /*val filteredProducts: Map<Boolean, List<ProductUi>> = remember(state.products) {
+        state.products.groupBy { it.productCategory == state.categoryFilter }
+    }*/
+
+    val filteredProducts: List<MenuCardItem> = remember(state.menuCardItems) {
+        state.menuCardItems.filter { it.productUi.productCategory == state.categoryFilter }
+    }
+    /*{
+        state.menuCardItems.filter { it.productUi.productCategory == state.categoryFilter }
+    }*/
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.bg,
         contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             LazyPizzaTopAppBar()
@@ -152,7 +162,89 @@ fun HomeScreen(
 
                 }
             }
-            items(state.menuCardItems) { items ->
+
+            when(state.categoryFilter) {
+                ProductCategory.PIZZA -> {
+                    filteredProducts
+                        .filter { it.productUi.productCategory == ProductCategory.PIZZA }
+
+                    items(filteredProducts) { items ->
+                        ProductCard(
+                            modifier = Modifier,
+                            onAction = onAction,
+                            state = state,
+                            menuCardItem = MenuCardItem(
+                                productUi = items.productUi,
+                                quantity = items.quantity
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
+                ProductCategory.DRINKS -> {
+                    filteredProducts.filter { it.productUi.productCategory == ProductCategory.DRINKS }
+                    items(filteredProducts) { items ->
+                        ProductCard(
+                            modifier = Modifier,
+                            onAction = onAction,
+                            state = state,
+                            menuCardItem = MenuCardItem(
+                                productUi = items.productUi,
+                                quantity = items.quantity
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+                ProductCategory.ICE_CREAM -> {
+                    filteredProducts.filter { it.productUi.productCategory == ProductCategory.ICE_CREAM }
+                    items(filteredProducts) { items ->
+                        ProductCard(
+                            modifier = Modifier,
+                            onAction = onAction,
+                            state = state,
+                            menuCardItem = MenuCardItem(
+                                productUi = items.productUi,
+                                quantity = items.quantity
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+                ProductCategory.SAUCES -> {
+                    filteredProducts.filter { it.productUi.productCategory == ProductCategory.SAUCES }
+                    items(filteredProducts) { items ->
+                        ProductCard(
+                            modifier = Modifier,
+                            onAction = onAction,
+                            state = state,
+                            menuCardItem = MenuCardItem(
+                                productUi = items.productUi,
+                                quantity = items.quantity
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
+                else -> {
+                    items(state.menuCardItems) { items ->
+                        ProductCard(
+                            modifier = Modifier,
+                            onAction = onAction,
+                            state = state,
+                            menuCardItem = MenuCardItem(
+                                productUi = items.productUi,
+                                quantity = items.quantity
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+            }
+
+            /*items(state.menuCardItems) { items ->
                 ProductCard(
                     modifier = Modifier,
                     onAction = onAction,
@@ -162,25 +254,8 @@ fun HomeScreen(
                         quantity = items.quantity
                     )
                 )
-               /* ProductCard(
-                    modifier = Modifier,
-                    onAction = onAction,
-                    state = state,
-                    menuCardItem = MenuCardItem(
-                        productUi = ProductUi(
-                            id = "123",
-                            name = "Margherita",
-                            ingredients = "Tomato sauce, mozzarella, fresh basil, olive oil",
-                            price = "$8.99",
-                            productCategory = ProductCategory.PIZZA,
-                            imageUrl = "",
-                            toppingIds = null
-                        ),
-                        quantity = 1
-                    )
-                )*/
                 Spacer(modifier = Modifier.height(8.dp))
-            }
+            }*/
 
         }
 

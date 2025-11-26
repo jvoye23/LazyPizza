@@ -4,6 +4,7 @@ import com.jv23.lazypizza.core.domain.LocalProductDataSource
 import com.jv23.lazypizza.core.domain.ProductRepository
 import com.jv23.lazypizza.core.domain.RemoteFirebaseProductDataSource
 import com.jv23.lazypizza.core.domain.model.Product
+import com.jv23.lazypizza.core.domain.model.Topping
 import com.jv23.lazypizza.core.domain.util.DataError
 import com.jv23.lazypizza.core.domain.util.EmptyResult
 import com.jv23.lazypizza.core.domain.util.Result
@@ -31,5 +32,9 @@ class OfflineFirstProductRepository(
 
     override fun getProductItems(): Flow<List<Product>> {
         return localProductDataSource.getProducts()
+    }
+
+    override fun getToppingItems(): Flow<List<Topping>> {
+        return localProductDataSource.getToppings()
     }
 }

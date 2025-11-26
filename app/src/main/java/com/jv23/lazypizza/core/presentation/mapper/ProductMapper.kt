@@ -1,16 +1,25 @@
 package com.jv23.lazypizza.core.presentation.mapper
 
-import com.jv23.lazypizza.core.domain.model.Drink
-import com.jv23.lazypizza.core.domain.model.IceCream
-import com.jv23.lazypizza.core.domain.model.Pizza
 import com.jv23.lazypizza.core.domain.model.Product
-import com.jv23.lazypizza.core.domain.model.Sauce
 import com.jv23.lazypizza.core.domain.model.Topping
 import com.jv23.lazypizza.core.presentation.model.ProductUi
+import com.jv23.lazypizza.core.presentation.model.ToppingUi
+import java.text.NumberFormat
+import java.util.Locale
 
-fun Pizza.toProductUi(): ProductUi {
-    val displayPrice = (price / 100.0).toString()
-    displayPrice.format("%.2f", displayPrice)
+fun Topping.toToppingUi(): ToppingUi {
+    val displayPrice = NumberFormat.getCurrencyInstance(Locale.US).format(price)
+
+    return ToppingUi(
+        id = id,
+        name = name,
+        price = displayPrice,
+        imageUrl = imageUrl
+    )
+}
+
+fun Product.toProductUi(): ProductUi {
+    val displayPrice = NumberFormat.getCurrencyInstance(Locale.US).format(price)
 
     return ProductUi(
         id = id,
@@ -19,81 +28,6 @@ fun Pizza.toProductUi(): ProductUi {
         price = displayPrice,
         productCategory = productCategory,
         imageUrl = imageUrl,
-        toppingIds = emptyList()
-    )
-}
-
-fun Drink.toProductUi(): ProductUi {
-    val displayPrice = (price / 100.0).toString()
-    displayPrice.format("%.2f", displayPrice)
-
-    return ProductUi(
-        id = id,
-        name = name,
-        ingredients = null,
-        price = displayPrice,
-        productCategory = productCategory,
-        imageUrl = imageUrl,
-        toppingIds = null
-    )
-}
-
-fun IceCream.toProductUi(): ProductUi {
-    val displayPrice = (price / 100.0).toString()
-    displayPrice.format("%.2f", displayPrice)
-
-    return ProductUi(
-        id = id,
-        name = name,
-        ingredients = null,
-        price = displayPrice,
-        productCategory = productCategory,
-        imageUrl = imageUrl,
-        toppingIds = null
-    )
-}
-
-fun Sauce.toProductUi(): ProductUi {
-    val displayPrice = (price / 100.0).toString()
-    displayPrice.format("%.2f", displayPrice)
-
-    return ProductUi(
-        id = id,
-        name = name,
-        ingredients = null,
-        price = displayPrice,
-        productCategory = productCategory,
-        imageUrl = imageUrl,
-        toppingIds = null
-    )
-}
-
-fun Topping.toProductUi(): ProductUi {
-    val displayPrice = (price / 100.0).toString()
-    displayPrice.format("%.2f", displayPrice)
-
-    return ProductUi(
-        id = id,
-        name = name,
-        ingredients = null,
-        price = displayPrice,
-        productCategory = productCategory,
-        imageUrl = imageUrl,
-        toppingIds = null
-    )
-}
-
-fun Product.toProductUi(): ProductUi {
-    val displayPrice = (price / 100.0).toString()
-    displayPrice.format("%.2f", displayPrice)
-
-    return ProductUi(
-        id = id,
-        name = name,
-        ingredients = null,
-        price = displayPrice,
-        productCategory = productCategory,
-        imageUrl = imageUrl,
-        toppingIds = null
+        toppings = toppings
     )
 }
