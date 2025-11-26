@@ -1,5 +1,6 @@
 package com.jv23.lazypizza.home.presentation
 
+import androidx.compose.foundation.text.input.TextFieldState
 import com.jv23.lazypizza.core.domain.model.MenuCardItem
 import com.jv23.lazypizza.core.domain.model.ProductCategory
 import com.jv23.lazypizza.core.presentation.model.ProductUi
@@ -19,7 +20,9 @@ data class HomeState(
     val categoryFilter: ProductCategory? = null,
 
     val products: List<ProductUi> = emptyList<ProductUi>(),
-    val menuCardItems: List<MenuCardItem> = emptyList()
+    val menuCardItems: List<MenuCardItem> = emptyList(),
+
+    val searchInput: TextFieldState = TextFieldState()
 
 
 

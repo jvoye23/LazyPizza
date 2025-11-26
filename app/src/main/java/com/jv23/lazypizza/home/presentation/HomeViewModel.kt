@@ -6,10 +6,14 @@ import com.jv23.lazypizza.core.domain.ProductRepository
 import com.jv23.lazypizza.core.domain.model.MenuCardItem
 import com.jv23.lazypizza.core.domain.model.ProductCategory
 import com.jv23.lazypizza.core.presentation.mapper.toProductUi
+import com.jv23.lazypizza.home.presentation.util.textAsFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,6 +32,7 @@ class HomeViewModel(
             if (!hasLoadedInitialData) {
                 productRepository.fetchProductCatalog()
                 getProducts()
+                searchProduct()
                 hasLoadedInitialData = true
             }
         }
@@ -72,5 +77,47 @@ class HomeViewModel(
         }
     }
 
+    fun searchProduct() {
+
+        _state.value.searchInput.textAsFlow()
+            .onEach { input ->
+                _state.update { currentState ->
+                    val filtered = if (input.isBlank()) {
+                        // Restore from the backup list
+                        currentState.menuCardItems
+                    } else {
+                        // Filter the backup list, NOT the visible list
+                        currentState.menuCardItems.filter {
+                            it.productUi.name.contains(input, ignoreCase = true)
+                        }
+                    }
+
+                    currentState.copy(menuCardItems = filtered)
+                }
+            }
+            .launchIn(viewModelScope)
+
+        /*val allProducts = state.value.menuCardItems
+
+        _state.value.searchInput.textAsFlow()
+            .onEach { input ->
+                _state.update { it.copy(
+                    menuCardItems = allProducts
+                ) }
+
+                val searchedItems = state.value.menuCardItems
+                    .filter { it.productUi.name.contains(input, ignoreCase = true) }
+
+                _state.update { it.copy(
+                    menuCardItems = searchedItems
+                )}
+
+            }
+            .launchIn(viewModelScope)*/
+
+    }
 
 }
+
+//val pizzas =  state.menuCardItems
+//                        .filter { it.productUi.productCategory == ProductCategory.PIZZA }

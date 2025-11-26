@@ -68,17 +68,6 @@ fun HomeScreen(
     onAction: (HomeAction) -> Unit,
     state: HomeState,
 ) {
-    /*val filteredProducts: Map<Boolean, List<ProductUi>> = remember(state.products) {
-        state.products.groupBy { it.productCategory == state.categoryFilter }
-    }*/
-
-    val filteredProducts: List<MenuCardItem> = remember(state.menuCardItems) {
-        state.menuCardItems.filter { it.productUi.productCategory == state.categoryFilter }
-    }
-    /*{
-        state.menuCardItems.filter { it.productUi.productCategory == state.categoryFilter }
-    }*/
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -112,7 +101,7 @@ fun HomeScreen(
             item {
                 LazyPizzaSearchBar(
                     modifier = Modifier,
-                    state = TextFieldState(),
+                    state = state.searchInput,
                     leadingIcon = Icon_SearchRefraction,
                     containerColor = MaterialTheme.colorScheme.surfaceHigher,
                     hint = stringResource(R.string.search_for_delicious_food),
@@ -165,10 +154,10 @@ fun HomeScreen(
 
             when(state.categoryFilter) {
                 ProductCategory.PIZZA -> {
-                    filteredProducts
+                    val pizzas =  state.menuCardItems
                         .filter { it.productUi.productCategory == ProductCategory.PIZZA }
 
-                    items(filteredProducts) { items ->
+                    items(pizzas) { items ->
                         ProductCard(
                             modifier = Modifier,
                             onAction = onAction,
@@ -183,8 +172,10 @@ fun HomeScreen(
                 }
 
                 ProductCategory.DRINKS -> {
-                    filteredProducts.filter { it.productUi.productCategory == ProductCategory.DRINKS }
-                    items(filteredProducts) { items ->
+                    val drinks = state.menuCardItems
+                        .filter { it.productUi.productCategory == ProductCategory.DRINKS }
+
+                    items(drinks) { items ->
                         ProductCard(
                             modifier = Modifier,
                             onAction = onAction,
@@ -198,8 +189,10 @@ fun HomeScreen(
                     }
                 }
                 ProductCategory.ICE_CREAM -> {
-                    filteredProducts.filter { it.productUi.productCategory == ProductCategory.ICE_CREAM }
-                    items(filteredProducts) { items ->
+                    val iceCreams = state.menuCardItems
+                        .filter { it.productUi.productCategory == ProductCategory.ICE_CREAM }
+
+                    items(iceCreams) { items ->
                         ProductCard(
                             modifier = Modifier,
                             onAction = onAction,
@@ -213,8 +206,10 @@ fun HomeScreen(
                     }
                 }
                 ProductCategory.SAUCES -> {
-                    filteredProducts.filter { it.productUi.productCategory == ProductCategory.SAUCES }
-                    items(filteredProducts) { items ->
+                    val sauces = state.menuCardItems
+                        .filter { it.productUi.productCategory == ProductCategory.SAUCES }
+
+                    items(sauces) { items ->
                         ProductCard(
                             modifier = Modifier,
                             onAction = onAction,
