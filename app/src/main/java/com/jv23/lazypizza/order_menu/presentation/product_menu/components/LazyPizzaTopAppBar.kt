@@ -1,4 +1,4 @@
-package com.jv23.lazypizza.home.presentation.components
+package com.jv23.lazypizza.order_menu.presentation.product_menu.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,21 +18,15 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.jv23.lazypizza.R
-import com.jv23.lazypizza.core.presentation.designsystem.theme.Icon_Phone
 import com.jv23.lazypizza.core.presentation.designsystem.theme.Icon_PhoneFilled
 import com.jv23.lazypizza.core.presentation.designsystem.theme.Icon_Pizza
 
-import com.jv23.lazypizza.core.presentation.designsystem.theme.Icon_Plus
 import com.jv23.lazypizza.core.presentation.designsystem.theme.LazyPizzaTheme
 import com.jv23.lazypizza.core.presentation.designsystem.theme.bg
 import com.jv23.lazypizza.core.presentation.designsystem.theme.body1Regular
 import com.jv23.lazypizza.core.presentation.designsystem.theme.body3Bold
-import com.jv23.lazypizza.core.presentation.designsystem.theme.body3Regular
 import com.jv23.lazypizza.core.presentation.designsystem.theme.textPrimary
 import com.jv23.lazypizza.core.presentation.designsystem.theme.textSecondary
 

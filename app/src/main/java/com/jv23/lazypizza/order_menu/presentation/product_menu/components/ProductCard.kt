@@ -1,7 +1,6 @@
-package com.jv23.lazypizza.home.presentation.components
+package com.jv23.lazypizza.order_menu.presentation.product_menu.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,14 +54,14 @@ import com.jv23.lazypizza.core.presentation.designsystem.theme.title1SemiBold
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title2
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title3
 import com.jv23.lazypizza.core.presentation.model.ProductUi
-import com.jv23.lazypizza.home.presentation.HomeAction
-import com.jv23.lazypizza.home.presentation.HomeState
+import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuAction
+import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuState
 
 @Composable
 fun ProductCard(
     modifier: Modifier = Modifier,
-    onAction: (HomeAction) -> Unit,
-    state: HomeState,
+    onAction: (ProductMenuAction) -> Unit,
+    state: ProductMenuState,
     menuCardItem: MenuCardItem,
 
     ) {
@@ -72,7 +70,7 @@ fun ProductCard(
             .fillMaxWidth()
             .height(124.dp)
             .clickable {
-                onAction(HomeAction.OnMenuItemCardClick(menuCardItem))
+                onAction(ProductMenuAction.OnMenuItemCardClick(menuCardItem))
             },
         shape = RoundedCornerShape(12.dp),
         colors = CardColors(
@@ -288,7 +286,7 @@ private fun MenuCardItemCounter (
     modifier: Modifier = Modifier,
     onPlusClick: () -> Unit,
     onMinusClick: () -> Unit,
-    state: HomeState,
+    state: ProductMenuState,
     menuCardItem: MenuCardItem
 ) {
    Row(
@@ -371,7 +369,7 @@ private fun PizzaCardPreview() {
             ProductCard(
                 modifier = Modifier,
                 onAction = {},
-                state = HomeState(
+                state = ProductMenuState(
                     selectedMenuCardItem = MenuCardItem(
                         productUi = ProductUi(
                             id = "123",

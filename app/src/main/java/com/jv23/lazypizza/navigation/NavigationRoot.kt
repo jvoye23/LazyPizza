@@ -1,7 +1,5 @@
 package com.jv23.lazypizza.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
@@ -16,8 +14,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.jv23.lazypizza.core.presentation.designsystem.theme.bg
-import com.jv23.lazypizza.home.presentation.HomeScreenRoot
+import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuScreenRoot
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -57,7 +54,7 @@ fun NavigationRoot(
                     NavEntry(
                         key = HomeNavKey
                     ) {
-                        HomeScreenRoot(
+                        ProductMenuScreenRoot(
                             viewModel = koinViewModel()
                         )
                     }

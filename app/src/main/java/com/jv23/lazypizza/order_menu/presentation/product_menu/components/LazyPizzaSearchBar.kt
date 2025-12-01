@@ -1,7 +1,6 @@
-package com.jv23.lazypizza.home.presentation.components
+package com.jv23.lazypizza.order_menu.presentation.product_menu.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,7 +41,6 @@ import com.jv23.lazypizza.core.presentation.designsystem.theme.LazyPizzaTheme
 import com.jv23.lazypizza.core.presentation.designsystem.theme.bg
 import com.jv23.lazypizza.core.presentation.designsystem.theme.body1Regular
 import com.jv23.lazypizza.core.presentation.designsystem.theme.textSecondary
-import com.jv23.lazypizza.home.presentation.HomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

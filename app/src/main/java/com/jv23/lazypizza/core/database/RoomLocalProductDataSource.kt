@@ -15,6 +15,7 @@ import com.jv23.lazypizza.core.domain.model.Topping
 import com.jv23.lazypizza.core.domain.util.DataError
 import com.jv23.lazypizza.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 class RoomLocalProductDataSource (
@@ -26,6 +27,7 @@ class RoomLocalProductDataSource (
             .map { productEntities ->
                 productEntities.map { it.toProduct() }
             }
+
         return products
     }
 

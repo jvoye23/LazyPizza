@@ -1,4 +1,4 @@
-package com.jv23.lazypizza.home.presentation.util
+package com.jv23.lazypizza.order_menu.presentation.util
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow

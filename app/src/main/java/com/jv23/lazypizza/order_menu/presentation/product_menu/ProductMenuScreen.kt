@@ -1,7 +1,6 @@
-package com.jv23.lazypizza.home.presentation
+package com.jv23.lazypizza.order_menu.presentation.product_menu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,26 +14,25 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jv23.lazypizza.R
-import com.jv23.lazypizza.core.domain.model.MenuCardItem
 import com.jv23.lazypizza.core.domain.model.ProductCategory
 import com.jv23.lazypizza.core.presentation.designsystem.theme.Icon_SearchRefraction
 import com.jv23.lazypizza.core.presentation.designsystem.theme.LazyPizzaTheme
@@ -43,30 +41,27 @@ import com.jv23.lazypizza.core.presentation.designsystem.theme.body3Medium
 import com.jv23.lazypizza.core.presentation.designsystem.theme.lazyPizzaOutline
 import com.jv23.lazypizza.core.presentation.designsystem.theme.surfaceHigher
 import com.jv23.lazypizza.core.presentation.designsystem.theme.textPrimary
-import com.jv23.lazypizza.core.presentation.model.ProductUi
-import com.jv23.lazypizza.home.presentation.components.LazyPizzaSearchBar
-import com.jv23.lazypizza.home.presentation.components.LazyPizzaTopAppBar
-import com.jv23.lazypizza.home.presentation.components.ProductCard
+import com.jv23.lazypizza.order_menu.presentation.product_menu.components.LazyPizzaSearchBar
+import com.jv23.lazypizza.order_menu.presentation.product_menu.components.LazyPizzaTopAppBar
+import com.jv23.lazypizza.order_menu.presentation.product_menu.components.ProductCard
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreenRoot(
-    viewModel: HomeViewModel = koinViewModel()
+fun ProductMenuScreenRoot(
+    viewModel: ProductMenuViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    HomeScreen(
-        modifier = Modifier,
+    ProductMenuScreen(
         onAction = viewModel::onAction,
         state = state
     )
 }
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-    onAction: (HomeAction) -> Unit,
-    state: HomeState,
+fun ProductMenuScreen(
+    onAction: (ProductMenuAction) -> Unit,
+    state: ProductMenuState,
 ) {
     Scaffold(
         modifier = Modifier
@@ -119,7 +114,7 @@ fun HomeScreen(
                         FilterChip(
                             modifier = Modifier.wrapContentWidth(),
                             selected = state.categoryFilter == productCategory,
-                            onClick = { onAction(HomeAction.OnChangeProductCategoryFilter(categoryFilter = productCategory)) },
+                            onClick = { onAction(ProductMenuAction.OnChangeProductCategoryFilter(categoryFilter = productCategory)) },
                             label = {
                                 Text(
                                     modifier = Modifier,
@@ -151,8 +146,45 @@ fun HomeScreen(
 
                 }
             }
+            // Products List
 
-            when(state.categoryFilter) {
+            // 1. Filter logic (Prepare the data)
+            val itemsToShow = if (state.categoryFilter != null) {
+                // If a specific filter is active, only show that category
+                state.menuCardItems.filter { it.productUi.productCategory == state.categoryFilter }
+            } else {
+                // "Else" case: Show everything
+                state.menuCardItems
+            }
+
+            // 2. Group the data by Category
+            // This creates a Map<ProductCategory, List<MenuCardItem>>
+            val groupedItems = itemsToShow.groupBy { it.productUi.productCategory }
+
+            // 3. Iterate over the groups to render headers and items
+            groupedItems.forEach { (category, itemsInThisCategory) ->
+
+                // THE STICKY HEADER
+                stickyHeader {
+                    CategoryHeader(text = category.name) // See implementation below
+                }
+
+                // THE ITEMS FOR THIS CATEGORY
+                items(
+                    items = itemsInThisCategory,
+                    key = { it.productUi.id } // performance optimization
+                ) { item ->
+                    ProductCard(
+                        modifier = Modifier, // Add fillMaxWidth() here if needed
+                        onAction = onAction,
+                        state = state,
+                        menuCardItem = item // No need to reconstruct the object if it's the same type
+                    )
+                }
+            }
+
+
+            /*when(state.categoryFilter) {
                 ProductCategory.PIZZA -> {
                     val pizzas =  state.menuCardItems
                         .filter { it.productUi.productCategory == ProductCategory.PIZZA }
@@ -237,7 +269,7 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-            }
+            }*/
 
             /*items(state.menuCardItems) { items ->
                 ProductCard(
@@ -255,19 +287,28 @@ fun HomeScreen(
         }
 
     }
-
-
-
-
-
+}
+@Composable
+fun CategoryHeader(text: String) {
+    Surface(
+        color = MaterialTheme.colorScheme.surface, // Must be opaque!
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
 }
 
 @Preview
 @Composable
-private fun HomeScreenPreview() {
+private fun ProductMenuScreenPreview() {
     LazyPizzaTheme {
-        HomeScreen(
-            state = HomeState(
+        ProductMenuScreen(
+            state = ProductMenuState(
                 categoryFilter = ProductCategory.PIZZA
             ),
             onAction = {}
