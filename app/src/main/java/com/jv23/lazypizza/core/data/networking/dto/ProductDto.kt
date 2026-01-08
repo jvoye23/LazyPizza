@@ -13,7 +13,7 @@ data class ProductCatalogDto(
 data class ProductDto(
     val id: String = "",
     val name: String = "",
-    val price: Double = 0.0,
+    val price: Int = 0,
     val productCategory: ProductCategory = ProductCategory.PIZZA,
     val imageUrl: String = "",
     val ingredients: String? = null,
@@ -24,7 +24,7 @@ data class ProductDto(
 data class ToppingDto(
     var id: String = "",
     var name: String = "",
-    var price: Double = 0.0,
+    var price: Int = 0,
     var imageUrl: String = ""
 )
 
@@ -34,7 +34,7 @@ data class PizzaDto(
     var id: String = "",
     var name: String = "",
     var ingredients: String = "",
-    var price: Double = 0.0,
+    var price: Int = 0,
     var productCategory: String = "",
     var imageUrl: String = "",
     var toppingIds: List<Int> = emptyList()
@@ -44,7 +44,7 @@ data class PizzaDto(
 data class DrinkDto(
     var id: String = "",
     var name: String = "",
-    var price: Double = 0.0,
+    var price: Int = 0,
     var productCategory: String = "",
     var imageUrl: String = ""
 )
@@ -53,7 +53,7 @@ data class DrinkDto(
 data class IceCreamDto(
     var id: String = "",
     var name: String = "",
-    var price: Double = 0.0,
+    var price: Int = 0,
     var productCategory: String = "",
     var imageUrl: String = ""
 )
@@ -62,7 +62,7 @@ data class IceCreamDto(
 data class SaucesDto(
     var id: String = "",
     var name: String = "",
-    var price: Double = 0.0,
+    var price: Int = 0,
     var productCategory: String = "",
     var imageUrl: String = ""
 )

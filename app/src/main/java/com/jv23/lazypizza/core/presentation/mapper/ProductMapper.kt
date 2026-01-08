@@ -2,6 +2,7 @@ package com.jv23.lazypizza.core.presentation.mapper
 
 import com.jv23.lazypizza.core.domain.model.Product
 import com.jv23.lazypizza.core.domain.model.Topping
+import com.jv23.lazypizza.core.presentation.designsystem.util.toCurrencyString
 import com.jv23.lazypizza.core.presentation.model.ProductUi
 import com.jv23.lazypizza.core.presentation.model.ToppingUi
 import java.text.NumberFormat
@@ -13,7 +14,7 @@ fun Topping.toToppingUi(): ToppingUi {
     return ToppingUi(
         id = id,
         name = name,
-        price = displayPrice,
+        price = price,
         imageUrl = imageUrl
     )
 }
@@ -25,7 +26,7 @@ fun Product.toProductUi(): ProductUi {
         id = id,
         name = name,
         ingredients = ingredients,
-        price = displayPrice,
+        price = price,
         productCategory = productCategory,
         imageUrl = imageUrl,
         toppings = toppings

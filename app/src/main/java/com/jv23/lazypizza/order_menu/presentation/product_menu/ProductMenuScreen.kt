@@ -1,6 +1,7 @@
 package com.jv23.lazypizza.order_menu.presentation.product_menu
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,6 +43,7 @@ import com.jv23.lazypizza.core.presentation.designsystem.theme.body3Medium
 import com.jv23.lazypizza.core.presentation.designsystem.theme.lazyPizzaOutline
 import com.jv23.lazypizza.core.presentation.designsystem.theme.surfaceHigher
 import com.jv23.lazypizza.core.presentation.designsystem.theme.textPrimary
+import com.jv23.lazypizza.core.presentation.designsystem.theme.textSecondary
 import com.jv23.lazypizza.order_menu.presentation.product_menu.components.LazyPizzaSearchBar
 import com.jv23.lazypizza.order_menu.presentation.product_menu.components.LazyPizzaTopAppBar
 import com.jv23.lazypizza.order_menu.presentation.product_menu.components.ProductCard
@@ -48,13 +51,20 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProductMenuScreenRoot(
+    onMenuItemClick: (String) -> Unit,
     viewModel: ProductMenuViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ProductMenuScreen(
-        onAction = viewModel::onAction,
-        state = state
+        state = state,
+        onAction = { action ->
+            when(action) {
+                is ProductMenuAction.OnMenuItemCardClick-> { onMenuItemClick(action.menuCardItem.productUi.id)}
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
     )
 }
 
@@ -78,7 +88,8 @@ fun ProductMenuScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
                 Image(
@@ -166,7 +177,9 @@ fun ProductMenuScreen(
 
                 // THE STICKY HEADER
                 stickyHeader {
-                    CategoryHeader(text = category.name) // See implementation below
+                    CategoryHeader(
+                        text = category.name
+                    )
                 }
 
                 // THE ITEMS FOR THIS CATEGORY
@@ -175,130 +188,30 @@ fun ProductMenuScreen(
                     key = { it.productUi.id } // performance optimization
                 ) { item ->
                     ProductCard(
-                        modifier = Modifier, // Add fillMaxWidth() here if needed
+                        modifier = Modifier,
                         onAction = onAction,
                         state = state,
-                        menuCardItem = item // No need to reconstruct the object if it's the same type
+                        menuCardItem = item
                     )
                 }
             }
-
-
-            /*when(state.categoryFilter) {
-                ProductCategory.PIZZA -> {
-                    val pizzas =  state.menuCardItems
-                        .filter { it.productUi.productCategory == ProductCategory.PIZZA }
-
-                    items(pizzas) { items ->
-                        ProductCard(
-                            modifier = Modifier,
-                            onAction = onAction,
-                            state = state,
-                            menuCardItem = MenuCardItem(
-                                productUi = items.productUi,
-                                quantity = items.quantity
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-
-                ProductCategory.DRINKS -> {
-                    val drinks = state.menuCardItems
-                        .filter { it.productUi.productCategory == ProductCategory.DRINKS }
-
-                    items(drinks) { items ->
-                        ProductCard(
-                            modifier = Modifier,
-                            onAction = onAction,
-                            state = state,
-                            menuCardItem = MenuCardItem(
-                                productUi = items.productUi,
-                                quantity = items.quantity
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-                ProductCategory.ICE_CREAM -> {
-                    val iceCreams = state.menuCardItems
-                        .filter { it.productUi.productCategory == ProductCategory.ICE_CREAM }
-
-                    items(iceCreams) { items ->
-                        ProductCard(
-                            modifier = Modifier,
-                            onAction = onAction,
-                            state = state,
-                            menuCardItem = MenuCardItem(
-                                productUi = items.productUi,
-                                quantity = items.quantity
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-                ProductCategory.SAUCES -> {
-                    val sauces = state.menuCardItems
-                        .filter { it.productUi.productCategory == ProductCategory.SAUCES }
-
-                    items(sauces) { items ->
-                        ProductCard(
-                            modifier = Modifier,
-                            onAction = onAction,
-                            state = state,
-                            menuCardItem = MenuCardItem(
-                                productUi = items.productUi,
-                                quantity = items.quantity
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-
-                else -> {
-                    items(state.menuCardItems) { items ->
-                        ProductCard(
-                            modifier = Modifier,
-                            onAction = onAction,
-                            state = state,
-                            menuCardItem = MenuCardItem(
-                                productUi = items.productUi,
-                                quantity = items.quantity
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-            }*/
-
-            /*items(state.menuCardItems) { items ->
-                ProductCard(
-                    modifier = Modifier,
-                    onAction = onAction,
-                    state = state,
-                    menuCardItem = MenuCardItem(
-                        productUi = items.productUi,
-                        quantity = items.quantity
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }*/
-
         }
-
     }
 }
 @Composable
-fun CategoryHeader(text: String) {
+fun CategoryHeader(
+    text: String
+) {
     Surface(
-        color = MaterialTheme.colorScheme.surface, // Must be opaque!
-        modifier = Modifier.fillMaxWidth()
+        color = MaterialTheme.colorScheme.bg,
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
+            color = MaterialTheme.colorScheme.textSecondary
         )
     }
 }

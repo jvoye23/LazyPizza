@@ -3,7 +3,7 @@ package com.jv23.lazypizza.core.domain.model
 data class Product(
     val id: String,
     val name: String,
-    val price: Double,
+    val price: Int,
     val productCategory: ProductCategory,
     val imageUrl: String,
     val ingredients: String?,
@@ -13,7 +13,7 @@ data class Product(
 data class Topping(
     val id: String,
     val name: String,
-    val price: Double,
+    val price: Int,
     val imageUrl: String
 )
 

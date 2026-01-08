@@ -32,3 +32,43 @@ val Icon_PhoneFilled: ImageVector
 val Icon_Pizza: ImageVector
     @Composable
     get() = ImageVector.vectorResource(R.drawable.lazy_pizza_app_icon)
+
+val Icon_ArrowLeft: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.arrow_left)
+
+val Icon_BookOpen: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.book_open_01)
+
+val Icon_Check: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.check)
+
+val Icon_ChevronDown: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.chevron_down)
+
+val Icon_ChevronLeft: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.chevron_left)
+
+val Icon_ChevronRight: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.chevron_right)
+
+val Icon_Heart: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.heart)
+
+val Icon_Logout: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.log_out_04)
+
+val Icon_ShoppingCart: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.shopping_cart_01)
+
+val Icon_User: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(R.drawable.user_03)

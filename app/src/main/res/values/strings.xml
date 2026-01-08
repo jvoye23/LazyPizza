@@ -9,4 +9,5 @@
     <string name="search_for_delicious_food">Search for delicious food...</string>
     <string name="all">All</string>
     <string name="error_couldnt_load_image">Could not load image</string>
+    <string name="add_extra_toppings">Add extra toppings</string>
 </resources>

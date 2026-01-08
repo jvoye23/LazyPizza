@@ -8,6 +8,6 @@ data class ToppingEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val name: String,
-    val price: Double,
+    val price: Int,
     val imageUrl: String
 )

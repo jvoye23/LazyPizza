@@ -53,9 +53,12 @@ import com.jv23.lazypizza.core.presentation.designsystem.theme.textSecondary
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title1SemiBold
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title2
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title3
+import com.jv23.lazypizza.core.presentation.designsystem.util.toCurrencyString
 import com.jv23.lazypizza.core.presentation.model.ProductUi
 import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuAction
 import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuState
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun ProductCard(
@@ -66,7 +69,7 @@ fun ProductCard(
 
     ) {
     Card(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .height(124.dp)
             .clickable {
@@ -208,7 +211,7 @@ fun ProductCard(
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = menuCardItem.productUi.price,
+                                text = menuCardItem.productUi.price.toCurrencyString()  ,
                                 style = MaterialTheme.typography.title1SemiBold,
                                 color = MaterialTheme.colorScheme.textPrimary
                             )
@@ -258,7 +261,11 @@ fun ProductCard(
                             ) {
                                 Text(
                                     modifier = Modifier,
-                                    text = state.selectedItemTotalPrice ?: menuCardItem.productUi.price,
+                                    text = NumberFormat
+                                        .getCurrencyInstance(Locale.US)
+                                        .format(state.selectedItemTotalPrice)
+                                        ?: NumberFormat.getCurrencyInstance(Locale.US)
+                                            .format(menuCardItem.productUi.price),
                                     style = MaterialTheme.typography.title1SemiBold,
                                     color = MaterialTheme.colorScheme.textPrimary
                                 )
@@ -375,7 +382,7 @@ private fun PizzaCardPreview() {
                             id = "123",
                             name = "Margherita",
                             ingredients = "Tomato sauce, mozzarella, fresh basil, olive oil",
-                            price = "$8.99",
+                            price = 899,
                             productCategory = ProductCategory.DRINKS,
                             imageUrl = "",
                             toppings = emptyList()
@@ -389,7 +396,7 @@ private fun PizzaCardPreview() {
                         id = "123",
                         name = "Margherita",
                         ingredients = "Tomato sauce, mozzarella, fresh basil, olive oil",
-                        price = "$8.99",
+                        price = 899,
                         productCategory = ProductCategory.DRINKS,
                         imageUrl = "",
                         toppings = emptyList()
