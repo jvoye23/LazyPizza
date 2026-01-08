@@ -11,7 +11,7 @@ data class ProductEntity(
     val id: String,
     val name: String,
     val ingredients: String?,
-    val price: Double,
+    val price: Int,
     val productCategory: ProductCategory,
     val imageUrl: String,
     val toppings: List<Topping>?

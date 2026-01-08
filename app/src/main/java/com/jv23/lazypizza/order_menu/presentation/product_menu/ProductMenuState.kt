@@ -35,7 +35,7 @@ private fun getItemTotalPriceById(selectedItems: List<MenuCardItem>, selectedIte
         val selectedItem = selectedItems.first { item ->
             item.productUi.id == selectedItemId
         }
-        selectedItem.productUi.price
+        selectedItem.productUi.price.toString()
 
     } else {
         null

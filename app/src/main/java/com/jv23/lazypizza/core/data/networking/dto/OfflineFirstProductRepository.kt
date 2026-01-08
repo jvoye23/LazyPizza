@@ -9,6 +9,8 @@ import com.jv23.lazypizza.core.domain.util.DataError
 import com.jv23.lazypizza.core.domain.util.EmptyResult
 import com.jv23.lazypizza.core.domain.util.Result
 import com.jv23.lazypizza.core.domain.util.asEmptyDataResult
+import com.jv23.lazypizza.core.presentation.mapper.toProductUi
+import com.jv23.lazypizza.core.presentation.model.ProductUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -36,5 +38,9 @@ class OfflineFirstProductRepository(
 
     override fun getToppingItems(): Flow<List<Topping>> {
         return localProductDataSource.getToppings()
+    }
+
+    override suspend fun getProductById(productId: String): ProductUi? {
+        return localProductDataSource.getProductById(productId)?.toProductUi()
     }
 }

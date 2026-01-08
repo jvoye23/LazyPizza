@@ -14,16 +14,18 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.jv23.lazypizza.order_menu.presentation.product_detail.ProductDetailScreenRoot
 import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuScreenRoot
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Serializable
 data object HomeNavKey: NavKey
 
 @Serializable
-data class PizzaDetailScreen(
-    val productId: String
+data class PizzaDetailNavKey(
+    val productId: String? = null
 ): NavKey
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -55,10 +57,26 @@ fun NavigationRoot(
                         key = HomeNavKey
                     ) {
                         ProductMenuScreenRoot(
-                            viewModel = koinViewModel()
+                            viewModel = koinViewModel(),
+                            onMenuItemClick = { productId ->
+                                backStack.add(PizzaDetailNavKey(productId = productId))
+                            }
                         )
                     }
                 }
+                is PizzaDetailNavKey -> {
+                    NavEntry(
+                        key = PizzaDetailNavKey(productId = key.productId)
+                    ) {
+                        ProductDetailScreenRoot(
+                            onNavigateBackClick = { backStack.remove(key) },
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(key.productId) }
+                            )
+                        )
+                    }
+                }
+
                 else -> throw RuntimeException("Invalid NavKey")
             }
         }
