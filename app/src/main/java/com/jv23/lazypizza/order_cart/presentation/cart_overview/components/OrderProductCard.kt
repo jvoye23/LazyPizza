@@ -1,4 +1,4 @@
-package com.jv23.lazypizza.order_menu.presentation.product_menu.components
+package com.jv23.lazypizza.order_cart.presentation.cart_overview.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -17,14 +17,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -53,27 +51,25 @@ import com.jv23.lazypizza.core.presentation.designsystem.theme.textPrimary
 import com.jv23.lazypizza.core.presentation.designsystem.theme.textSecondary
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title1SemiBold
 import com.jv23.lazypizza.core.presentation.designsystem.theme.title2
-import com.jv23.lazypizza.core.presentation.designsystem.theme.title3
 import com.jv23.lazypizza.core.presentation.designsystem.util.toCurrencyString
 import com.jv23.lazypizza.core.presentation.model.ProductUi
-import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuAction
-import com.jv23.lazypizza.order_menu.presentation.product_menu.ProductMenuState
+import com.jv23.lazypizza.core.presentation.model.ToppingUi
+import com.jv23.lazypizza.order_cart.presentation.cart_overview.CartOverviewAction
+import com.jv23.lazypizza.order_cart.presentation.cart_overview.CartOverviewState
+import com.jv23.lazypizza.order_menu.presentation.product_detail.PizzaTopping
 
 @Composable
-fun ProductCard(
+fun OrderProductCard(
     modifier: Modifier = Modifier,
-    onAction: (ProductMenuAction) -> Unit,
-    state: ProductMenuState,
+    onAction: (CartOverviewAction) -> Unit,
+    state: CartOverviewState,
     menuCardItem: MenuCardItem,
 
     ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(124.dp)
-            .clickable {
-                onAction(ProductMenuAction.OnMenuItemCardClick(menuCardItem))
-            },
+            .height(124.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.surfaceHigher,
@@ -163,7 +159,7 @@ fun ProductCard(
                         if (menuCardItem.quantity != 0) {
                             Box(
                                 modifier = Modifier
-                                    .clickable { onAction(ProductMenuAction.OnTrashBinClick(menuCardItem)) }
+                                    .clickable { onAction(CartOverviewAction.OnTrashBinClick(menuCardItem)) }
                                     .size(24.dp)
                                     .background(
                                         color = MaterialTheme.colorScheme.surfaceHigher,
@@ -189,88 +185,54 @@ fun ProductCard(
 
                     }
 
-                    if (menuCardItem.productUi.ingredients != null) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            text = menuCardItem.productUi.ingredients,
-                            style = MaterialTheme.typography.body3Regular,
-                            color = MaterialTheme.colorScheme.textSecondary
-                        )
+                    menuCardItem.productUi.pizzaToppings?.forEach { topping ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                modifier = Modifier,
+                                text = "${topping.quantity} x ",
+                                style = MaterialTheme.typography.body3Regular,
+                                color = MaterialTheme.colorScheme.textSecondary
+                            )
+                            Text(
+                                modifier = Modifier,
+                                text = topping.toppingUi.name,
+                                style = MaterialTheme.typography.body3Regular,
+                                color = MaterialTheme.colorScheme.textSecondary
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    if (menuCardItem.quantity == 0) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        MenuCardItemCounter(
+                            onPlusClick = {onAction(CartOverviewAction.OnPlusClick(menuCardItem))},
+                            onMinusClick = {onAction(CartOverviewAction.OnMinusClick(menuCardItem))},
+                            menuCardItem = menuCardItem
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Column(
+                            modifier = Modifier,
+                            horizontalAlignment = Alignment.End
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = menuCardItem.productUi.price.toCurrencyString()  ,
+                                text = (menuCardItem.productUi.price * menuCardItem.quantity).toCurrencyString(),
                                 style = MaterialTheme.typography.title1SemiBold,
                                 color = MaterialTheme.colorScheme.textPrimary
                             )
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            if (menuCardItem.productUi.productCategory != ProductCategory.PIZZA) {
-                                OutlinedButton(
-                                    modifier = Modifier
-                                        .height(40.dp),
-                                    onClick = {onAction(ProductMenuAction.OnAddToCartClick(menuCardItem))},
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.surfaceHigher,
-                                        contentColor = MaterialTheme.colorScheme.primary
-                                    ),
-                                    border = BorderStroke(
-                                        width = 1.dp,
-                                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
-                                    )
-
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.add_to_cart),
-                                        style = MaterialTheme.typography.title3,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-
-                                }
-                            }
-
-                        }
-                    } else {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            MenuCardItemCounter(
-                                onPlusClick = {onAction(ProductMenuAction.OnPlusClick(menuCardItem))},
-                                onMinusClick = {onAction(ProductMenuAction.OnMinusClick(menuCardItem))},
-                                state = state,
-                                menuCardItem = menuCardItem
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            Column(
+                            Text(
                                 modifier = Modifier,
-                                horizontalAlignment = Alignment.End
-                            ) {
-                                Text(
-                                    modifier = Modifier,
-                                    text = (menuCardItem.productUi.price * menuCardItem.quantity).toCurrencyString(),
-                                    style = MaterialTheme.typography.title1SemiBold,
-                                    color = MaterialTheme.colorScheme.textPrimary
-                                )
-                                Text(
-                                    modifier = Modifier,
-                                    text = menuCardItem.quantity.toString() + " x " + menuCardItem.productUi.price.toCurrencyString(),
-                                    style = MaterialTheme.typography.body4Regular,
-                                    color = MaterialTheme.colorScheme.textSecondary
-                                )
-                            }
+                                text = menuCardItem.quantity.toString() + " x " + menuCardItem.productUi.price.toCurrencyString(),
+                                style = MaterialTheme.typography.body4Regular,
+                                color = MaterialTheme.colorScheme.textSecondary
+                            )
                         }
                     }
                 }
@@ -281,81 +243,78 @@ fun ProductCard(
 
 @Composable
 private fun MenuCardItemCounter (
-    modifier: Modifier = Modifier,
     onPlusClick: () -> Unit,
     onMinusClick: () -> Unit,
-    state: ProductMenuState,
     menuCardItem: MenuCardItem
 ) {
-   Row(
-       modifier = Modifier
-           .width(96.dp)
-   ) {
-       Box(
-           modifier = Modifier
-               .clickable { onMinusClick() }
-               .size(24.dp)
-               .background(
-                   color = MaterialTheme.colorScheme.surfaceHigher,
-                   shape = RoundedCornerShape(8.dp) // Apply shape here
-               )
-               .border(
-                   width = 1.dp,
-                   color = MaterialTheme.colorScheme.lazyPizzaOutline.copy(alpha = 0.5f),
-                   shape = RoundedCornerShape(8.dp) // <-- Add the shape here
-               )
-               .clip(RoundedCornerShape(8.dp)),
-           contentAlignment = Alignment.Center
-       ) {
-           Icon(
-               modifier = Modifier
-                   .size(14.dp),
-               tint = MaterialTheme.colorScheme.textSecondary,
-               contentDescription = null,
-               imageVector = Icon_Minus
-           )
-       }
-       Text(
-           modifier = Modifier
-               .weight(1f)
-               ,
-           textAlign = TextAlign.Center,
-           text = menuCardItem.quantity.toString(),
-           style = MaterialTheme.typography.title2,
-           color = MaterialTheme.colorScheme.textPrimary
+    Row(
+        modifier = Modifier
+            .width(96.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .clickable { onMinusClick() }
+                .size(24.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceHigher,
+                    shape = RoundedCornerShape(8.dp) // Apply shape here
+                )
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.lazyPizzaOutline.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(8.dp) // <-- Add the shape here
+                )
+                .clip(RoundedCornerShape(8.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(14.dp),
+                tint = MaterialTheme.colorScheme.textSecondary,
+                contentDescription = null,
+                imageVector = Icon_Minus
+            )
+        }
+        Text(
+            modifier = Modifier
+                .weight(1f)
+            ,
+            textAlign = TextAlign.Center,
+            text = menuCardItem.quantity.toString(),
+            style = MaterialTheme.typography.title2,
+            color = MaterialTheme.colorScheme.textPrimary
 
-       )
-       Box(
-           modifier = Modifier
-               .clickable { onPlusClick() }
-               .size(24.dp)
-               .background(
-                   color = MaterialTheme.colorScheme.surfaceHigher,
-                   shape = RoundedCornerShape(8.dp) // Apply shape here
-               )
-               .border(
-                   width = 1.dp,
-                   color = MaterialTheme.colorScheme.lazyPizzaOutline.copy(alpha = 0.5f),
-                   shape = RoundedCornerShape(8.dp) // <-- Add the shape here
-               )
-               .clip(RoundedCornerShape(8.dp)),
-           contentAlignment = Alignment.Center
-       ) {
-           Icon(
-               modifier = Modifier
-                   .size(14.dp),
-               tint = MaterialTheme.colorScheme.textSecondary,
-               contentDescription = null,
-               imageVector = Icon_Plus
-           )
-       }
-   }
+        )
+        Box(
+            modifier = Modifier
+                .clickable { onPlusClick() }
+                .size(24.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceHigher,
+                    shape = RoundedCornerShape(8.dp) // Apply shape here
+                )
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.lazyPizzaOutline.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(8.dp) // <-- Add the shape here
+                )
+                .clip(RoundedCornerShape(8.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(14.dp),
+                tint = MaterialTheme.colorScheme.textSecondary,
+                contentDescription = null,
+                imageVector = Icon_Plus
+            )
+        }
+    }
 }
 
 @Preview
 @Composable
-private fun PizzaCardPreview() {
-
+private fun OrderProductCardPreview() {
     LazyPizzaTheme {
         Column(
             modifier = Modifier
@@ -363,25 +322,11 @@ private fun PizzaCardPreview() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ) { 
-            ProductCard(
+        ) {
+            OrderProductCard(
                 modifier = Modifier,
                 onAction = {},
-                state = ProductMenuState(
-                    selectedMenuCardItem = MenuCardItem(
-                        productUi = ProductUi(
-                            id = "123",
-                            name = "Margherita",
-                            ingredients = "Tomato sauce, mozzarella, fresh basil, olive oil",
-                            price = 899,
-                            productCategory = ProductCategory.DRINKS,
-                            imageUrl = "",
-                            pizzaToppings = emptyList()
-                        ),
-                        quantity = 1
-                    ),
-                    selectedItemQuantity = 2
-                ),
+                state = CartOverviewState(),
                 menuCardItem =  MenuCardItem(
                     productUi = ProductUi(
                         id = "123",
@@ -390,7 +335,18 @@ private fun PizzaCardPreview() {
                         price = 899,
                         productCategory = ProductCategory.DRINKS,
                         imageUrl = "",
-                        pizzaToppings = emptyList()
+                        pizzaToppings = listOf<PizzaTopping>(
+                            PizzaTopping(
+                                toppingUi = ToppingUi(
+                                    id = "1",
+                                    name = "Pepperoni",
+                                    price = 100,
+                                    imageUrl = ""
+                                ),
+                                isSelected = false,
+                                quantity = 1
+                            )
+                        )
                     ),
                     quantity = 1
                 )

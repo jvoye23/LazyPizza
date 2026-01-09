@@ -2,6 +2,7 @@ package com.jv23.lazypizza.order_menu.presentation.product_menu
 
 import androidx.compose.foundation.text.input.TextFieldState
 import com.jv23.lazypizza.core.domain.model.MenuCardItem
+import com.jv23.lazypizza.core.domain.model.OrderCart
 import com.jv23.lazypizza.core.domain.model.ProductCategory
 import com.jv23.lazypizza.core.presentation.model.ProductUi
 
@@ -24,7 +25,9 @@ data class ProductMenuState(
     val dataSource: List<MenuCardItem> = emptyList(),
 
 
-    val searchInput: TextFieldState = TextFieldState()
+    val searchInput: TextFieldState = TextFieldState(),
+
+    val orderCart: OrderCart = OrderCart()
 
 
 

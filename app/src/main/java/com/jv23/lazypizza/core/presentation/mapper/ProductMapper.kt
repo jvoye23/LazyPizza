@@ -2,15 +2,11 @@ package com.jv23.lazypizza.core.presentation.mapper
 
 import com.jv23.lazypizza.core.domain.model.Product
 import com.jv23.lazypizza.core.domain.model.Topping
-import com.jv23.lazypizza.core.presentation.designsystem.util.toCurrencyString
 import com.jv23.lazypizza.core.presentation.model.ProductUi
 import com.jv23.lazypizza.core.presentation.model.ToppingUi
-import java.text.NumberFormat
-import java.util.Locale
+import com.jv23.lazypizza.order_menu.presentation.product_detail.PizzaTopping
 
 fun Topping.toToppingUi(): ToppingUi {
-    val displayPrice = NumberFormat.getCurrencyInstance(Locale.US).format(price)
-
     return ToppingUi(
         id = id,
         name = name,
@@ -20,8 +16,6 @@ fun Topping.toToppingUi(): ToppingUi {
 }
 
 fun Product.toProductUi(): ProductUi {
-    val displayPrice = NumberFormat.getCurrencyInstance(Locale.US).format(price)
-
     return ProductUi(
         id = id,
         name = name,
@@ -29,6 +23,15 @@ fun Product.toProductUi(): ProductUi {
         price = price,
         productCategory = productCategory,
         imageUrl = imageUrl,
-        toppings = toppings
+        pizzaToppings = toppings?.map { it.toPizzaTopping() }
+    )
+}
+
+fun Topping.toPizzaTopping(): PizzaTopping {
+    return PizzaTopping(
+        toppingUi = this.toToppingUi(),
+        isSelected = false,
+        quantity = 0
+
     )
 }
