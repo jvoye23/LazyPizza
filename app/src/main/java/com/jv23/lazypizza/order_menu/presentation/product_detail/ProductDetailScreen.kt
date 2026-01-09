@@ -311,7 +311,7 @@ private fun ProductDetailScreenPreview() {
                     price = 899,
                     productCategory = ProductCategory.DRINKS,
                     imageUrl = "",
-                    toppings = emptyList(),
+                    pizzaToppings = emptyList(),
                 )
             ),
             onAction = {}

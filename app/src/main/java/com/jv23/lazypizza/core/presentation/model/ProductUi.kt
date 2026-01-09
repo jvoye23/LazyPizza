@@ -1,7 +1,7 @@
 package com.jv23.lazypizza.core.presentation.model
 
 import com.jv23.lazypizza.core.domain.model.ProductCategory
-import com.jv23.lazypizza.core.domain.model.Topping
+import com.jv23.lazypizza.order_menu.presentation.product_detail.PizzaTopping
 
 
 data class ProductUi(
@@ -11,7 +11,7 @@ data class ProductUi(
     val price: Int,
     val productCategory: ProductCategory,
     val imageUrl: String,
-    val toppings: List<Topping>?
+    val pizzaToppings: List<PizzaTopping>?
 )
 
 data class ToppingUi(

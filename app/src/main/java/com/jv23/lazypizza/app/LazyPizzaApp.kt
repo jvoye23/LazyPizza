@@ -6,6 +6,7 @@ import com.jv23.lazypizza.BuildConfig
 import com.jv23.lazypizza.app.di.appModule
 import com.jv23.lazypizza.core.coreDataModule
 import com.jv23.lazypizza.core.database.di.databaseModule
+import com.jv23.lazypizza.order_cart.di.orderCartModule
 import com.jv23.lazypizza.order_menu.di.homeModule
 import com.jv23.lazypizza.order_menu.di.productDetailModule
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +34,8 @@ class LazyPizzaApp: Application() {
                 coreDataModule,
                 homeModule,
                 databaseModule,
-                productDetailModule
+                productDetailModule,
+                orderCartModule
             )
         }
     }

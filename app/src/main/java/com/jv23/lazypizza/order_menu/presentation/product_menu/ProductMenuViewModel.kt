@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jv23.lazypizza.core.domain.ProductRepository
 import com.jv23.lazypizza.core.domain.model.MenuCardItem
 import com.jv23.lazypizza.core.presentation.mapper.toProductUi
+import com.jv23.lazypizza.order_menu.presentation.product_detail.PizzaTopping
 import com.jv23.lazypizza.order_menu.presentation.util.textAsFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -76,6 +77,88 @@ class ProductMenuViewModel(
                     categoryFilter = action.categoryFilter
                 ) }
             }
+
+            is ProductMenuAction.OnAddToCartClick -> { onAddToCart(action.menuCardItem) }
+            is ProductMenuAction.OnTrashBinClick -> { onTrashBinClick(action.menuCardItem) }
+            is ProductMenuAction.OnMinusClick -> { decreaseQuantity(action.menuCardItem) }
+            is ProductMenuAction.OnPlusClick -> { addQuantity(action.menuCardItem) }
+        }
+    }
+
+
+
+    private fun onAddToCart(menuCardItem: MenuCardItem) {
+        _state.update { currentState ->
+            val updatedMenuCartItems = currentState.menuCardItems.map { item ->
+                if (item.productUi.id == menuCardItem.productUi.id) {
+                    item.copy(
+                        quantity = 1
+                    )
+                } else {
+                    item
+                }
+            }
+            currentState.copy(
+                menuCardItems = updatedMenuCartItems,
+            )
+        }
+    }
+
+
+
+    private fun onTrashBinClick(menuCardItem: MenuCardItem) {
+        _state.update { currentState ->
+            val updatedMenuCartItems = currentState.menuCardItems.map { item ->
+                if (item.productUi.id == menuCardItem.productUi.id) {
+                    item.copy(
+                        quantity = 0
+                    )
+                } else {
+                    item
+                }
+            }
+            currentState.copy(
+                menuCardItems = updatedMenuCartItems
+            )
+        }
+    }
+
+    private fun addQuantity(menuCardItem: MenuCardItem) {
+        val itemPrice = menuCardItem.productUi.price
+
+        _state.update { currentState ->
+            val updatedMenuCartItems = currentState.menuCardItems.map { item ->
+                if (item.productUi.id == menuCardItem.productUi.id) {
+                    val newQuantity = item.quantity + 1
+                    item.copy(
+                        quantity = newQuantity
+                    )
+                } else {
+                    item
+                }
+            }
+            currentState.copy(
+                menuCardItems = updatedMenuCartItems,
+            )
+        }
+    }
+
+    private fun decreaseQuantity(menuCardItem: MenuCardItem) {
+        val itemPrice = menuCardItem.productUi.price
+        _state.update { currentState ->
+            val updatedMenuCartItems = currentState.menuCardItems.map { item ->
+                if (item.productUi.id == menuCardItem.productUi.id) {
+                    val newQuantity = (item.quantity - 1).coerceAtLeast(0)
+                    item.copy(
+                        quantity = newQuantity
+                    )
+                } else {
+                    item
+                }
+            }
+            currentState.copy(
+                menuCardItems = updatedMenuCartItems
+            )
         }
     }
 

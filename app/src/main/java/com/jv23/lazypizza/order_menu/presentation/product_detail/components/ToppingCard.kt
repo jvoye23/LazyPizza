@@ -48,8 +48,6 @@ import com.jv23.lazypizza.core.presentation.model.ToppingUi
 import com.jv23.lazypizza.order_menu.presentation.product_detail.PizzaTopping
 import com.jv23.lazypizza.order_menu.presentation.product_detail.ProductDetailAction
 import com.jv23.lazypizza.order_menu.presentation.product_detail.ProductDetailState
-import java.text.NumberFormat
-import java.util.Locale
 
 
 @Composable
@@ -260,7 +258,7 @@ private fun PizzaToppingCardPreview() {
                         price = 199 / 100,
                         productCategory = ProductCategory.DRINKS,
                         imageUrl = "",
-                        toppings = emptyList()
+                        pizzaToppings = emptyList()
                     )
                 ),
                 pizzaToppingItem = PizzaTopping(
